@@ -6,8 +6,8 @@ import Image from "next/image";
 
 export default function Home() {
   const shoots = [
-    { name: "Keisha", path: "/shoots/keisha", img: "/photos/keisha 1.jpg" },
-    { name: "Cassy", path: "/shoots/cassy", img: "/photos/cassy rose 1.jpg" },
+    { name: "Keisha", path: "/shoots/keisha", icon: "/globe.svg" },
+    { name: "Cassy", path: "/shoots/cassy", icon: "/window.svg" },
     // Add more shoots as needed
   ];
 
@@ -57,22 +57,23 @@ export default function Home() {
       <div
         style={{
           zIndex: 1,
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
-          gap: "2rem",
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "center",
+          gap: "2.5rem",
           width: "100%",
           maxWidth: "900px",
           margin: "2rem auto 0 auto",
         }}
       >
-        {shoots.map((shoot) => (
+        {shoots.map((shoot, idx) => (
           <Link
             key={shoot.path}
             href={shoot.path}
             style={{
               background: "#fff",
               borderRadius: "18px",
-              boxShadow: "0 4px 24px rgba(215, 38, 96, 0.08)",
+              boxShadow: "0 4px 24px rgba(215, 38, 96, 0.10)",
               textDecoration: "none",
               color: "#d72660",
               fontWeight: 600,
@@ -80,36 +81,36 @@ export default function Home() {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              padding: "1.5rem 1rem 1rem 1rem",
-              transition: "transform 0.18s cubic-bezier(.4,2,.3,1)",
+              padding: "2.2rem 1.2rem 1.2rem 1.2rem",
+              transition: "transform 0.18s cubic-bezier(.4,2,.3,1), box-shadow 0.18s",
               position: "relative",
               overflow: "hidden",
+              cursor: "pointer",
+              border: "2.5px solid #d72660",
+              outline: "4px solid #fbeaf3",
+              outlineOffset: "-6px",
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.transform = "scale(1.045)";
+              e.currentTarget.style.boxShadow = "0 8px 32px #d7266015";
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.transform = "scale(1)";
+              e.currentTarget.style.boxShadow = "0 4px 24px rgba(215, 38, 96, 0.10)";
             }}
           >
-            <div style={{width: "100%", height: "180px", position: "relative", marginBottom: "1rem", borderRadius: "12px", overflow: "hidden", boxShadow: "0 2px 12px #d7266022"}}>
-              <Image src={shoot.img} alt={shoot.name + " preview"} fill style={{objectFit: "cover"}} />
+            <div style={{width: "64px", height: "64px", marginBottom: "1.2rem", display: "flex", alignItems: "center", justifyContent: "center", background: "linear-gradient(135deg, #fbeaf3 0%, #e0c3fc 100%)", borderRadius: "50%", boxShadow: "0 2px 8px #d7266022"}}>
+              <Image src={shoot.icon} alt={shoot.name + " icon"} width={38} height={38} />
             </div>
             <span style={{fontSize: "1.3rem", fontFamily: "Playfair Display, serif", marginBottom: "0.5rem"}}>{shoot.name}</span>
             <span style={{fontSize: "1rem", color: "#a85c7a"}}>View Photoshoot →</span>
+            {/* Animated accent */}
+            <svg style={{position: "absolute", bottom: 0, right: 0, width: "48px", height: "48px", opacity: 0.13}} viewBox="0 0 48 48"><circle cx="24" cy="24" r="20" fill="#c471a3" /></svg>
           </Link>
         ))}
       </div>
 
-      {/* Gallery preview section */}
-      <section style={{
-        zIndex: 1,
-        margin: "3rem auto 0 auto",
-        maxWidth: "900px",
-        width: "100%",
-        textAlign: "center",
-      }}>
-        <h2 style={{fontFamily: "Playfair Display, serif", color: "#c471a3", fontSize: "2rem", marginBottom: "1.2rem"}}>Featured Moments</h2>
-        <div style={{display: "flex", justifyContent: "center", gap: "1.5rem", flexWrap: "wrap"}}>
-          <Image src="/photos/keisha 2.jpg" alt="Keisha" width={180} height={120} style={{borderRadius: "10px", boxShadow: "0 2px 8px #d7266022"}} />
-          <Image src="/photos/cassy rose 2.jpg" alt="Cassy" width={180} height={120} style={{borderRadius: "10px", boxShadow: "0 2px 8px #d7266022"}} />
-          <Image src="/photos/keisha 3.jpg" alt="Keisha" width={180} height={120} style={{borderRadius: "10px", boxShadow: "0 2px 8px #d7266022"}} />
-        </div>
-      </section>
+      {/* Removed featured moments section as requested */}
 
       <footer style={{ marginTop: "4rem", fontWeight: 500, color: "#a85c7a", zIndex: 1 }}>
         <span style={{marginRight: "0.5rem"}}>© 2025 Captured by Myle</span>

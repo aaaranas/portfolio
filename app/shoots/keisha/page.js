@@ -1,13 +1,29 @@
 "use client";
+
 import Image from "next/image";
+import { useState } from "react";
+
 
 
 export default function Keisha() {
   const photos = [
-    "/photos/keisha 1.jpg",
+    "/photos/keisha 1.jpg", 
     "/photos/keisha 2.jpg",
     "/photos/keisha 3.jpg"
   ];
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalImg, setModalImg] = useState(null);
+
+  const openModal = (src) => {
+    setModalImg(src);
+    setModalOpen(true);
+    document.body.style.overflow = "hidden";
+  };
+  const closeModal = () => {
+    setModalOpen(false);
+    setModalImg(null);
+    document.body.style.overflow = "auto";
+  };
 
   return (
     <main
@@ -51,13 +67,19 @@ export default function Keisha() {
       <div
         style={{
           zIndex: 1,
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
-          gap: "2.5rem",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexWrap: "wrap",
+          gap: "2rem",
           width: "100%",
-          maxWidth: "1000px",
+          maxWidth: "900px",
           margin: "0 auto",
-          padding: "0 2rem 4rem 2rem",
+          padding: "2rem 1rem 4rem 1rem",
+          border: "none",
+          borderRadius: "0",
+          boxShadow: "none",
+          background: "transparent",
         }}
       >
         {photos.map((src, index) => (
@@ -67,40 +89,96 @@ export default function Keisha() {
               position: "relative",
               borderRadius: "18px",
               overflow: "hidden",
-              boxShadow: "0 6px 32px #d7266015",
+              boxShadow: "0 4px 18px #d7266015",
               transition: "transform 0.18s cubic-bezier(.4,2,.3,1)",
-              background: "#fff",
+              background: "transparent",
               cursor: "pointer",
+              width: "220px",
+              height: "275px",
+              border: "2.5px solid #d72660",
+              margin: "0.5rem 0",
               aspectRatio: "4/5",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
             }}
-            onMouseEnter={e => e.currentTarget.style.transform = "scale(1.04)"}
+            onMouseEnter={e => e.currentTarget.style.transform = "scale(1.045)"}
             onMouseLeave={e => e.currentTarget.style.transform = "scale(1)"}
+            onClick={() => openModal(src)}
           >
             <Image
               src={src}
-              alt={`Keisha ${index + 1}`}
+              alt=""
               fill
-              style={{objectFit: "cover", transition: "filter 0.3s", filter: "brightness(0.98)"}}
+              style={{objectFit: "cover", transition: "filter 0.3s", filter: "brightness(0.97) saturate(1.08)", borderRadius: "16px"}}
             />
-            <div style={{
-              position: "absolute",
-              bottom: "0",
-              left: "0",
-              width: "100%",
-              background: "linear-gradient(0deg, #d72660cc 0%, #fff0 100%)",
-              color: "#fff",
-              fontWeight: 600,
-              fontSize: "1.1rem",
-              padding: "0.7rem 0",
-              textAlign: "center",
-              letterSpacing: "0.5px",
-              opacity: "0.85",
-            }}>
-              Keisha {index + 1}
-            </div>
+            {/* Removed Keisha {index + 1} overlay as requested */}
+            {/* Decorative corner accent */}
+            <div style={{position: "absolute", top: 0, right: 0, width: "32px", height: "32px", background: "radial-gradient(circle at top right, #c471a3 60%, #fff0 100%)", borderBottomLeftRadius: "16px", opacity: 0.18}} />
           </div>
         ))}
       </div>
+
+      {/* Modal Lightbox */}
+      {modalOpen && (
+        <div
+          onClick={closeModal}
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            background: "rgba(40, 10, 40, 0.65)",
+            zIndex: 100,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            cursor: "pointer",
+            animation: "fadeIn 0.2s",
+          }}
+        >
+          <span style={{position: "absolute", top: "32px", right: "32px", zIndex: 101}}>
+            <button
+              onClick={closeModal}
+              style={{
+                background: "#d72660",
+                color: "#fff",
+                border: "none",
+                borderRadius: "50%",
+                width: "38px",
+                height: "38px",
+                fontSize: "1.5rem",
+                cursor: "pointer",
+                boxShadow: "0 2px 8px #d7266022",
+              }}
+              aria-label="Close"
+            >
+              ×
+            </button>
+          </span>
+          <Image
+            src={modalImg}
+            alt=""
+            width={600}
+            height={750}
+            style={{
+              border: "2.5px solid #d72660",
+              borderRadius: "16px",
+              boxShadow: "0 8px 32px #d7266015, 0 2px 16px #d7266022",
+              background: "transparent",
+              display: "block",
+              maxWidth: "60vw",
+              maxHeight: "80vh",
+              width: "auto",
+              height: "auto",
+              objectFit: "unset",
+              margin: "0 auto",
+              padding: 0
+            }}
+          />
+        </div>
+      )}
 
       {/* Bottom SVG Decoration */}
       <svg style={{position: "absolute", bottom: 0, left: 0, width: "100%", height: "80px", zIndex: 0}} viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg">
