@@ -57,7 +57,7 @@ export default function Keisha() {
           letterSpacing: "-1px",
           textShadow: "0 2px 12px #fff8",
         }}>
-          Keisha's Debut
+          Keisha&apos;s Debut
         </h1>
         <p style={{ fontSize: "1.15rem", color: "#a85c7a", marginBottom: "2.5rem" }}>
           A celebration of style, personality, and vibrant energy. Scroll to explore the gallery below.
@@ -108,11 +108,10 @@ export default function Keisha() {
           >
             <Image
               src={src}
-              alt=""
+              alt=" "
               fill
               style={{objectFit: "cover", transition: "filter 0.3s", filter: "brightness(0.97) saturate(1.08)", borderRadius: "16px"}}
             />
-            {/* Removed Keisha {index + 1} overlay as requested */}
             {/* Decorative corner accent */}
             <div style={{position: "absolute", top: 0, right: 0, width: "32px", height: "32px", background: "radial-gradient(circle at top right, #c471a3 60%, #fff0 100%)", borderBottomLeftRadius: "16px", opacity: 0.18}} />
           </div>
@@ -159,7 +158,7 @@ export default function Keisha() {
           </span>
           <Image
             src={modalImg}
-            alt=""
+            alt=" "
             width={600}
             height={750}
             style={{
@@ -186,7 +185,7 @@ export default function Keisha() {
       </svg>
 
       <footer style={{ marginTop: "2rem", fontWeight: 500, color: "#a85c7a", zIndex: 1, textAlign: "center", paddingBottom: "1.5rem" }}>
-        <span>© 2025 Captured by Myle</span>
+        <span>&copy; 2025 Captured by Myle</span>
       </footer>
     </main>
   );

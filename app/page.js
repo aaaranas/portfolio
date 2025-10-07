@@ -248,10 +248,10 @@ export default function Home() {
               boxShadow: "0 2px 8px #d7266022",
               animation: "spinIcon 2.5s linear infinite",
             }}>
-              <Image src={shoot.icon} width={38} height={38} />
+              <Image src={shoot.icon} width={38} height={38} alt=" " />
             </div>
             <span style={{fontSize: "1.3rem", fontFamily: "Playfair Display, serif", marginBottom: "0.5rem"}}>{shoot.name}</span>
-            <span style={{fontSize: "1rem", color: "#a85c7a"}}>View Photoshoot →</span>
+            <span style={{fontSize: "1rem", color: "#a85c7a"}}>View Photoshoot &#8594;</span>
             {/* Animated accent */}
             <svg style={{position: "absolute", bottom: 0, right: 0, width: "48px", height: "48px", opacity: 0.13}} viewBox="0 0 48 48"><circle cx="24" cy="24" r="20" fill="#c471a3" /></svg>
           </Link>
