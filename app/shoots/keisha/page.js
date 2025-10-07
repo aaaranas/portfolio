@@ -57,7 +57,7 @@ export default function Keisha() {
           letterSpacing: "-1px",
           textShadow: "0 2px 12px #fff8",
         }}>
-          Keisha Photoshoot
+          Keisha's Debut
         </h1>
         <p style={{ fontSize: "1.15rem", color: "#a85c7a", marginBottom: "2.5rem" }}>
           A celebration of style, personality, and vibrant energy. Scroll to explore the gallery below.
