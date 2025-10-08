@@ -5,9 +5,148 @@ import { useEffect, useRef, useState } from "react";
 
 export default function Home() {
   const shoots = [
-    { name: "Keisha", path: "/shoots/keisha", icon: "/globe.svg" },
-    { name: "Cassy", path: "/shoots/cassy", icon: "/window.svg" },
-    // Add more shoots as needed
+    {
+      name: "Keisha",
+      path: "/shoots/keisha",
+      icon: (
+        <svg width="38" height="38" viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <linearGradient id="g1" x1="0" x2="1" y1="0" y2="1">
+              <stop offset="0" stopColor="#d72660" />
+              <stop offset="1" stopColor="#c471a3" />
+            </linearGradient>
+          </defs>
+          <circle cx="19" cy="19" r="18" fill="url(#g1)" />
+          <path d="M12 24c4 0 6-6 14-6" stroke="#fff" strokeWidth="2" strokeLinecap="round" fill="none" opacity="0.9"/>
+        </svg>
+      ),
+    },
+    {
+      name: "Cassy",
+      path: "/shoots/cassy",
+      icon: (
+        <svg width="38" height="38" viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect x="5" y="5" width="28" height="28" rx="6" fill="#c471a3" />
+          <circle cx="19" cy="14" r="4.2" fill="#fff" opacity="0.95" />
+          <rect x="13" y="20" width="12" height="6" rx="2" fill="#d72660" />
+        </svg>
+      ),
+    },
+    {
+      name: "Lina",
+      path: "/shoots/lina",
+      icon: (
+        <svg width="38" height="38" viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <polygon points="19,6 32,32 6,32" fill="#e0c3fc" />
+          <circle cx="19" cy="20" r="5.5" fill="#d72660" opacity="0.95"/>
+        </svg>
+      ),
+    },
+    {
+      name: "Maya",
+      path: "/shoots/maya",
+      icon: (
+        <svg width="38" height="38" viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <linearGradient id="g2" x1="0" x2="1">
+              <stop offset="0" stopColor="#fbeaf3" />
+              <stop offset="1" stopColor="#c471a3" />
+            </linearGradient>
+          </defs>
+          <g fill="none" stroke="url(#g2)" strokeWidth="2.5">
+            <path d="M6 20c6-8 8-8 13-8s7 0 13 8" strokeLinecap="round" />
+            <circle cx="19" cy="20" r="6" fill="#d72660" />
+          </g>
+        </svg>
+      ),
+    },
+    {
+      name: "Aria",
+      path: "/shoots/aria",
+      icon: (
+        <svg width="38" height="38" viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect x="6" y="6" width="26" height="26" rx="13" fill="#c471a3" />
+          <path d="M12 24c3-5 5-7 7-7s4 2 7 7" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" fill="none"/>
+        </svg>
+      ),
+    },
+    {
+      name: "Noel",
+      path: "/shoots/noel",
+      icon: (
+        <svg width="38" height="38" viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="19" cy="19" r="18" fill="#fbeaf3"/>
+          <path d="M10 22c4-6 14-6 18 0" stroke="#c471a3" strokeWidth="2.2" strokeLinecap="round" fill="none"/>
+        </svg>
+      ),
+    },
+    {
+      name: "Rico",
+      path: "/shoots/rico",
+      icon: (
+        <svg width="38" height="38" viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect x="4" y="8" width="30" height="22" rx="4" fill="#d72660"/>
+          <circle cx="19" cy="17" r="4" fill="#fff"/>
+        </svg>
+      ),
+    },
+    {
+      name: "Elliot",
+      path: "/shoots/elliot",
+      icon: (
+        <svg width="38" height="38" viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <polygon points="19,6 28,32 10,32" fill="#c471a3"/>
+          <circle cx="19" cy="18" r="3.6" fill="#fbeaf3"/>
+        </svg>
+      ),
+    },
+    {
+      name: "Summer",
+      path: "/shoots/summer",
+      icon: (
+        <svg width="38" height="38" viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <linearGradient id="sun" x1="0" x2="1">
+              <stop offset="0" stopColor="#ffd166"/>
+              <stop offset="1" stopColor="#f79da8"/>
+            </linearGradient>
+          </defs>
+          <circle cx="19" cy="15" r="6" fill="url(#sun)"/>
+          <rect x="8" y="24" width="22" height="6" rx="3" fill="#e0c3fc"/>
+        </svg>
+      ),
+    },
+    {
+      name: "Brook",
+      path: "/shoots/brook",
+      icon: (
+        <svg width="38" height="38" viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M6 24c6-10 20-10 26 0" stroke="#c471a3" strokeWidth="2.6" strokeLinecap="round" fill="none" />
+          <circle cx="19" cy="16" r="4.2" fill="#d72660"/>
+        </svg>
+      ),
+    },
+    {
+      name: "Rowan",
+      path: "/shoots/rowan",
+      icon: (
+        <svg width="38" height="38" viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect x="7" y="7" width="24" height="24" rx="6" fill="#e0c3fc"/>
+          <circle cx="19" cy="19" r="5" fill="#c471a3"/>
+        </svg>
+      ),
+    },
+    // new shoot
+    {
+      name: "Nia",
+      path: "/shoots/nia",
+      icon: (
+        <svg width="38" height="38" viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="19" cy="19" r="18" fill="#c471a3" />
+          <path d="M13 24c3-5 11-5 14 0" stroke="#fff" strokeWidth="2" strokeLinecap="round" fill="none"/>
+        </svg>
+      ),
+    },
   ];
 
   const [search, setSearch] = useState("");
@@ -289,7 +428,26 @@ export default function Home() {
               boxShadow: "0 2px 8px #d7266022",
               animation: "spinIcon 2.5s linear infinite",
             }}>
-              <Image src={shoot.icon} width={38} height={38} alt=" " />
+              {/* render either an image src string or inline SVG JSX */}
+              {typeof shoot.icon === "string" ? (
+                <img
+                  src={shoot.icon}
+                  width={38}
+                  height={38}
+                  alt={`${shoot.name} icon`}
+                  style={{ width: 38, height: 38, display: "block" }}
+                  onError={(e) => {
+                    e.currentTarget.onerror = null;
+                    e.currentTarget.src =
+                      "data:image/svg+xml;utf8," +
+                      encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="38" height="38"><circle cx="19" cy="19" r="18" fill="#c471a3"/></svg>');
+                  }}
+                />
+              ) : (
+                <div style={{ width: 38, height: 38, display: "block", lineHeight: 0 }} aria-hidden="true">
+                  {shoot.icon}
+                </div>
+              )}
             </div>
             <span style={{fontSize: "1.3rem", fontFamily: "Playfair Display, serif", marginBottom: "0.5rem"}}>{shoot.name}</span>
             <span style={{fontSize: "1rem", color: "#a85c7a"}}>View Photoshoot &#8594;</span>
