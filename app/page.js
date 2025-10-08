@@ -183,24 +183,65 @@ export default function Home() {
           margin: "5rem auto 0 auto",
         }}
       >
-        <h1
+        {/* Hero / Title block — improved placement, scale and typography */}
+        <header
+          aria-label="Site intro"
           style={{
-            fontFamily: "Playfair Display, serif",
-            fontSize: "3.2rem",
-            color: "#d72660",
-            marginBottom: "1rem",
-            letterSpacing: "-2px",
-            textShadow: "0 2px 12px #fff8",
             width: "100%",
+            maxWidth: "820px",
+            margin: "0 auto 1.6rem auto",
             textAlign: "center",
+            display: "flex",
+            flexDirection: "column",
+            gap: "0.6rem",
+            alignItems: "center",
+            padding: "0 1rem",
             animation: "fadeInDown 1.1s cubic-bezier(.4,2,.3,1)",
           }}
         >
-          Myle Photography Portfolio
-        </h1>
-        <p style={{ fontSize: "1.25rem", color: "#a85c7a", marginBottom: "2.5rem", width: "100%", textAlign: "center" }}>
-          Capturing moments, emotions, and stories through the lens. Explore featured shoots below.
-        </p>
+          <h1
+            style={{
+              fontFamily: "'Playfair Display', serif",
+              fontSize: "min(4.2rem, 9.5vw)",
+              lineHeight: 1.03,
+              color: "linear-gradient(90deg,#d72660,#c471a3)",
+              margin: 0,
+              letterSpacing: "-1px",
+              fontWeight: 700,
+              // subtle layered text effect
+              textShadow: "0 6px 28px rgba(215,38,96,0.06)",
+              color: "#d72660"
+            }}
+          >
+            Myle Photography
+            <span style={{ display: "block", fontSize: "0.36em", color: "#a85c7a", fontWeight: 600, marginTop: "6px", fontFamily: "Montserrat, sans-serif" }}>
+              Portfolio
+            </span>
+          </h1>
+
+          <p
+            style={{
+              margin: "0",
+              marginTop: "0.6rem",
+              fontSize: "clamp(1rem, 1.6vw, 1.15rem)",
+              color: "#8f4a63",
+              maxWidth: "68ch",
+              lineHeight: 1.6,
+              fontFamily: "Montserrat, sans-serif",
+              background: "linear-gradient(180deg, rgba(255,255,255,0.0), rgba(255,255,255,0.02))",
+              padding: "0 0.2rem",
+            }}
+          >
+            Capturing moments, emotions and stories through a warm, editorial lens. Browse shoots below — the gallery is the main focus.
+          </p>
+
+          {/* small CTA row beneath title for emphasis */}
+          <div style={{ display: "flex", gap: "0.6rem", marginTop: "0.9rem", alignItems: "center" }}>
+            <span style={{ fontSize: "0.92rem", color: "#c24a73", fontWeight: 600, padding: "0.45rem 0.85rem", borderRadius: "999px", background: "rgba(215,38,96,0.06)" }}>Featured Shoots</span>
+            <span style={{ fontSize: "0.9rem", color: "#9f6e84", opacity: 0.9 }}>Use search (top-right) to filter</span>
+          </div>
+        </header>
+
         {filteredShoots.map((shoot, idx) => (
           <Link
             key={shoot.path}
