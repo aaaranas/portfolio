@@ -156,6 +156,12 @@ export default function Home() {
 
   // Dynamic floating nav animation
   const navRef = useRef(null);
+  // New refs for background layers + particle canvas
+  const bgRef = useRef(null);
+  const blob1Ref = useRef(null);
+  const blob2Ref = useRef(null);
+  const particleRef = useRef(null);
+
   useEffect(() => {
     let lastX = 32, lastY = 24;
     function handleMouseMove(e) {
@@ -165,11 +171,24 @@ export default function Home() {
         navRef.current.style.transform = `translate(${x}px, ${y}px) scale(1.03)`;
         lastX = x; lastY = y;
       }
+
+      // Parallax background blobs (subtle)
+      const prefersReduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!prefersReduce) {
+        const cx = e.clientX / window.innerWidth - 0.5;
+        const cy = e.clientY / window.innerHeight - 0.5;
+        if (blob1Ref.current) blob1Ref.current.style.transform = `translate(${cx * 18}px, ${cy * 12}px) rotate(-6deg)`;
+        if (blob2Ref.current) blob2Ref.current.style.transform = `translate(${cx * -10}px, ${cy * -8}px) rotate(8deg)`;
+        if (bgRef.current) bgRef.current.style.transform = `translate(${cx * -6}px, ${cy * -4}px)`;
+      }
     }
     function handleMouseLeave() {
       if (navRef.current) {
         navRef.current.style.transform = `translate(${lastX}px, ${lastY}px) scale(1)`;
       }
+      if (blob1Ref.current) blob1Ref.current.style.transform = '';
+      if (blob2Ref.current) blob2Ref.current.style.transform = '';
+      if (bgRef.current) bgRef.current.style.transform = '';
     }
     if (navRef.current) {
       navRef.current.addEventListener("mousedown", () => {
@@ -180,8 +199,75 @@ export default function Home() {
         }, { once: true });
       });
     }
+
+    // global pointer move for parallax
+    window.addEventListener("pointermove", handleMouseMove);
+    window.addEventListener("pointerleave", handleMouseLeave);
+
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("pointermove", handleMouseMove);
+      window.removeEventListener("pointerleave", handleMouseLeave);
+    };
+  }, []);
+
+  // Lightweight particle system (very subtle)
+  useEffect(() => {
+    const canvas = particleRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    let raf = null;
+    const dpr = window.devicePixelRatio || 1;
+    let width = canvas.clientWidth;
+    let height = canvas.clientHeight;
+    canvas.width = width * dpr;
+    canvas.height = height * dpr;
+    ctx.scale(dpr, dpr);
+
+    const prefersReduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReduce) {
+      ctx.clearRect(0, 0, width, height);
+      return;
+    }
+
+    const particles = Array.from({ length: 20 }).map(() => ({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      r: 0.6 + Math.random() * 1.6,
+      vx: (Math.random() - 0.5) * 0.2,
+      vy: (Math.random() - 0.5) * 0.2,
+      alpha: 0.06 + Math.random() * 0.08
+    }));
+
+    function resize() {
+      width = canvas.clientWidth;
+      height = canvas.clientHeight;
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      ctx.scale(dpr, dpr);
+    }
+    window.addEventListener('resize', resize);
+
+    function tick() {
+      ctx.clearRect(0, 0, width, height);
+      for (const p of particles) {
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.x < -10) p.x = width + 10;
+        if (p.x > width + 10) p.x = -10;
+        if (p.y < -10) p.y = height + 10;
+        if (p.y > height + 10) p.y = -10;
+        ctx.beginPath();
+        ctx.fillStyle = `rgba(255,255,255,${p.alpha})`;
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      raf = requestAnimationFrame(tick);
+    }
+    tick();
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener('resize', resize);
     };
   }, []);
 
@@ -193,20 +279,97 @@ export default function Home() {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "flex-start",
-        background: "linear-gradient(135deg, #fbeaf3 0%, #e0c3fc 100%)",
+        // remove inline single gradient and rely on layered background below
+        background: "transparent",
         color: "#a85c7a",
         fontFamily: "Montserrat, sans-serif",
         position: "relative",
         overflow: "hidden",
       }}
     >
-      {/* Decorative SVG */}
-      <svg style={{position: "absolute", top: 0, left: 0, width: "100%", height: "180px", zIndex: 0}} viewBox="0 0 1440 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+      {/* Background enhancements: animated gradient + soft blobs + subtle particles */}
+      <div
+        ref={bgRef}
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          inset: 0,
+          zIndex: 0,
+          pointerEvents: "none",
+          overflow: "hidden",
+        }}
+      >
+        {/* animated radial gradient layer */}
+        <div style={{
+          position: "absolute",
+          inset: 0,
+          background: "radial-gradient(1200px 600px at 10% 10%, rgba(215,38,96,0.10), transparent 15%), radial-gradient(900px 500px at 90% 90%, rgba(196,74,115,0.08), transparent 12%)",
+          mixBlendMode: "screen",
+          animation: "bgShift 18s linear infinite",
+          filter: "saturate(1.05) blur(12px)",
+          transform: "translateZ(0)"
+        }} />
+
+        {/* soft blurred color blobs */}
+        <div ref={blob1Ref} style={{
+          position: "absolute",
+          width: "520px",
+          height: "420px",
+          left: "-8%",
+          top: "-6%",
+          background: "radial-gradient(circle at 30% 30%, rgba(215,38,96,0.16), rgba(196,71,163,0.08) 45%, transparent 60%)",
+          filter: "blur(72px)",
+          transformOrigin: "center",
+          transition: "transform 220ms cubic-bezier(.2,.9,.3,1)",
+          pointerEvents: "none",
+        }} />
+
+        <div ref={blob2Ref} style={{
+          position: "absolute",
+          width: "420px",
+          height: "360px",
+          right: "-6%",
+          bottom: "-8%",
+          background: "radial-gradient(circle at 70% 70%, rgba(252,199,166,0.12), rgba(224,195,252,0.06) 40%, transparent 60%)",
+          filter: "blur(64px)",
+          transformOrigin: "center",
+          transition: "transform 260ms cubic-bezier(.2,.9,.3,1)",
+          pointerEvents: "none",
+        }} />
+
+        {/* subtle grain + vignette via pseudo elements (kept simple here) */}
+        <div style={{
+          position: "absolute",
+          inset: 0,
+          background: "linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02))",
+          mixBlendMode: "overlay",
+          pointerEvents: "none",
+        }} />
+
+        {/* particles canvas */}
+        <canvas
+          ref={particleRef}
+          style={{
+            position: "absolute",
+            inset: 0,
+            width: "100%",
+            height: "100%",
+            zIndex: 0,
+            pointerEvents: "none",
+            opacity: 0.85,
+            mixBlendMode: "soft-light"
+          }}
+        />
+      </div>
+
+      {/* Decorative SVG (kept on top of background) */}
+      <svg style={{position: "absolute", top: 0, left: 0, width: "100%", height: "180px", zIndex: 1}} viewBox="0 0 1440 180" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path fill="#d72660" fillOpacity="0.12" d="M0,96L60,101.3C120,107,240,117,360,128C480,139,600,149,720,144C840,139,960,117,1080,112C1200,107,1320,117,1380,122.7L1440,128L1440,0L1380,0C1320,0,1200,0,1080,0C960,0,840,0,720,0C600,0,480,0,360,0C240,0,120,0,60,0L0,0Z" />
       </svg>
 
       {/* Floating sidebar features */}
       <aside
+        ref={navRef}
         style={{
           position: "fixed",
           top: "80px",
@@ -456,12 +619,21 @@ export default function Home() {
           </Link>
         ))}
       </div>
+
       {/* Decorative bottom SVG */}
-      <svg style={{position: "absolute", bottom: 0, left: 0, width: "100%", height: "120px", zIndex: 0}} viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg style={{position: "absolute", bottom: 0, left: 0, width: "100%", height: "120px", zIndex: 1}} viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path fill="#c471a3" fillOpacity="0.10" d="M0,32L60,37.3C120,43,240,53,360,64C480,75,600,85,720,80C840,75,960,53,1080,48C1200,43,1320,53,1380,58.7L1440,64L1440,0L1380,0C1320,0,1200,0,1080,0C960,0,840,0,720,0C600,0,480,0,360,0C240,0,120,0,60,0L0,0Z" />
       </svg>
-      {/* Keyframes for fadeIn/fadeInUp/spinIcon */}
+
+      {/* Keyframes for background motion, fadeIn/fadeInUp/spinIcon */}
       <style>{`
+        /* background shift is very slow and subtle */
+        @keyframes bgShift {
+          0% { transform: translateY(0) scale(1); }
+          50% { transform: translateY(-18px) scale(1.02); }
+          100% { transform: translateY(0) scale(1); }
+        }
+
         @keyframes fadeIn {
           from { opacity: 0; transform: translateY(-16px);}
           to { opacity: 1; transform: translateY(0);}
@@ -477,6 +649,11 @@ export default function Home() {
         @keyframes spinIcon {
           0% { transform: rotate(0deg);}
           100% { transform: rotate(360deg);}
+        }
+
+        /* respect prefers-reduced-motion: disable most motion */
+        @media (prefers-reduced-motion: reduce) {
+          .reduce-motion, canvas { animation: none !important; transition: none !important; }
         }
       `}</style>
     </main>
