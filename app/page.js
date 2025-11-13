@@ -1,6 +1,8 @@
-"use client"; 
+"use client";
 
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function Page() {
     const primary = "#ffd1da"; // pastel pink
@@ -12,12 +14,18 @@ export default function Page() {
     const [hoveredButton, setHoveredButton] = useState(null);
     const [hoveredCard, setHoveredCard] = useState(null);
 
+    const router = useRouter();
+
+    const handleBookUs = () => {
+        router.push("/book");
+    };
+
     const categories = [
         {
             id: "debut",
             title: "Debut",
             items: [
-                { id: "Keisha", title: "Keisha", img: "/photos/keisha 1.jpg", gallery:["/photos/keisha 1.jpg","/photos/keisha 2.jpg","/photos/keisha 3.jpg",],},
+                { id: "Keisha", title: "Keisha", img: "/photos/keisha 1.jpg" },
                 { id: "debut-2", title: "Garden Debut", img: "https://via.placeholder.com/600x400.png?text=Debut+2" },
                 { id: "debut-3", title: "Vintage Debut Portrait", img: "https://via.placeholder.com/600x400.png?text=Debut+3" },
             ],
@@ -26,7 +34,7 @@ export default function Page() {
             id: "birthday",
             title: "Birthday",
             items: [
-                { id: "Cassy Rose", title: "Cassy Rose", img: "/photos/cassy rose 1.jpg", gallery:["/photos/cassy rose 1.jpg","/photos/cassy rose 2.jpg","/photos/cassy rose 3.jpg",],},
+                { id: "Cassy Rose", title: "Cassy Rose", img: "/photos/cassy rose 1.jpg" },
                 { id: "bday-2", title: "Surprise Party", img: "https://via.placeholder.com/600x400.png?text=Birthday+2" },
                 { id: "bday-3", title: "Milestone Celebration", img: "https://via.placeholder.com/600x400.png?text=Birthday+3" },
             ],
@@ -232,10 +240,13 @@ export default function Page() {
                                 onMouseEnter={() => setHoveredButton(i)}
                                 onMouseLeave={() => setHoveredButton(null)}
                                 onClick={() => {
-                                    // placeholder behavior: scroll to sections or open modal in full app
-                                    const target = label.toLowerCase().replace(" ", "-");
-                                    const el = document.getElementById(target);
-                                    if (el) el.scrollIntoView({ behavior: "smooth" });
+                                    if (label === "Book Us") {
+                                        handleBookUs();
+                                    } else {
+                                        const target = label.toLowerCase().replace(" ", "-");
+                                        const el = document.getElementById(target);
+                                        if (el) el.scrollIntoView({ behavior: "smooth" });
+                                    }
                                 }}
                                 aria-label={label}
                             >
@@ -256,12 +267,13 @@ export default function Page() {
 
                     <div style={styles.ctaGroup}>
                         <button
-                            style={styles.ctaButton(true, hoveredButton === "book")}
+                            onClick={handleBookUs}
                             onMouseEnter={() => setHoveredButton("book")}
                             onMouseLeave={() => setHoveredButton(null)}
-                            onClick={() => window.alert("Booking flow coming soon — placeholder")}
+                            style={styles.ctaButton(true, hoveredButton === "book")}
+                            aria-label="Book a photography session"
                         >
-                            Book Us
+                            📅 Book With Us
                         </button>
 
                         <button
@@ -309,23 +321,23 @@ export default function Page() {
                             {cat.items.map((item) => {
                                 const isHovered = hoveredCard === item.id;
                                 return (
-                                    <article
-                                        key={item.id}
-                                        style={styles.card(isHovered)}
-                                        onMouseEnter={() => setHoveredCard(item.id)}
-                                        onMouseLeave={() => setHoveredCard(null)}
-                                        aria-labelledby={`${item.id}-title`}
-                                    >
-                                        <div style={styles.imgWrap}>
-                                            <img src={item.img} alt={item.title} style={styles.img} />
-                                        </div>
-                                        <div style={styles.cardBody}>
-                                            <div id={`${item.id}-title`} style={styles.cardTitle}>
-                                                {item.title}
+                                    <Link key={item.id} href={`/shoots/${item.id}`}>
+                                        <article
+                                            style={styles.card(isHovered)}
+                                            onMouseEnter={() => setHoveredCard(item.id)}
+                                            onMouseLeave={() => setHoveredCard(null)}
+                                            aria-labelledby={`${item.id}-title`}
+                                        >
+                                            <div style={styles.imgWrap}>
+                                                <img src={item.img} alt={item.title} style={styles.img} />
                                             </div>
-                                            <div style={styles.cardDesc}>A short placeholder description for this shoot.</div>
-                                        </div>
-                                    </article>
+                                            <div style={styles.cardBody}>
+                                                <div id={`${item.id}-title`} style={styles.cardTitle}>{item.title}</div>
+                                                <div style={styles.cardDesc}>A short placeholder description for this shoot.</div>
+                                            </div>
+                                        </article>
+                                    </Link>
+
                                 );
                             })}
                         </div>
